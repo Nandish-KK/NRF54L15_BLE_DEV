@@ -29,7 +29,7 @@ Reference/        # Additional reference layouts and guides
 
 1. Clone the repository:
 	```bash
-	git clone <repo-url>
+	git clone https://github.com/Nandish-KK/NRF54L15_BLE_DEV
 	```
 2. Open the Altium project file in `Altium/Nordic_BLE/Nordic_BLE.PrjPcb`.
 3. Optionally you can import the Altium project in latest Kicad releases.
