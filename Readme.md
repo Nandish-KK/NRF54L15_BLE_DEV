@@ -1,4 +1,4 @@
-
+## !! Work in progress: The current design is untested. This page will be updated after assembly and testing
 ![Project Banner](Pictures/Banner.png)
 
 ## Overview
@@ -18,6 +18,7 @@ It is **not** an official NRF development board; it is a project I designed as a
 ## Folder Structure
 
 ```text
+3D/				  # Contains STEP and Blender files
 Altium/           # Altium project files and libraries
 Datasheet/        # Datasheets and reference documents
 Gerbers/          # Gerbers with PCB constraints optimized for JLCPCB
