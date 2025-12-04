@@ -61,6 +61,67 @@ This is a 4-layer stackup with both of the Inner layers being solid ground plane
 ### Bottom 3D View
 ![Layer_Bottom ](Pictures/Bottom_render.png)
 
+## Development bugs and fixes
+The nrf54 controller comes with `AP_PROTECT` enabled by default. The debuggeres are unable to access the cpu and user flash memory for flashing. In order to unlock the `AP_PROTECT` and get access to the device, the nrf documentation recommends "mass erase". This process will clear the protection registers and allow for flashing.
+
+If your using pyocd inside the nrf-connect terminal with west. During flash it will automatically detect the protection state and will try to erase before flashing. If that doesn't work, try external resets.
+```bash
+#from the project directory
+$ west flash -d build_1/ -r pyocd
+
+# --- OUTPUT ---
+-- west flash: rebuilding
+[0/5] Performing build step for 'hello_world'
+ninja: no work to do.
+[4/5] cd /home/user/path/to/project/dir/hello_world/build_1/_sysbuild && /home/user/ncs/toolchains/b2ecd2435d/usr/local/bin/cmake -E true
+-- west flash: using runner pyocd
+-- runners.pyocd: Flashing file: /media/renri/Hard_disk_Part1/NRF_playground/hello_world/build_1/merged.hex
+0000496 W NRF54L15 APPROTECT enabled: will try to unlock via mass erase [target_nRF54L]
+0001425 I Loading /home/user/path/to/project/dir/hello_world/build_1/merged.hex [load_cmd]
+[==================================================] 100%
+0005148 I Erased 36864 bytes (9 sectors), programmed 36864 bytes (9 pages), skipped 0 bytes (0 pages) at 9.75 kB/s [loader]
+```
+
+If the protection is enabled, the openenocd 'targets' command will report the main cpu status as unknown as shown below.
+
+```
+					 --- Locked State ---
+> targets
+    TargetName         Type       Endian TapName            State       
+--  ------------------ ---------- ------ ------------------ ------------
+ 0* nrf54l.cpu         cortex_m   little nrf54l.cpu         unknown
+ 1  nrf54l.aux         mem_ap     little nrf54l.cpu         running
+
+
+					--- Unlocked State ---
+ > targets
+    TargetName         Type       Endian TapName            State       
+--  ------------------ ---------- ------ ------------------ ------------
+ 0* nrf54l.cpu         cortex_m   little nrf54l.cpu         running
+ 1  nrf54l.aux         mem_ap     little nrf54l.cpu         running
+````
+
+You can use the following pyocd commands to erase the chip. Although you can connect via openocd, there doesn't seem to be a relibale way to erase the chip with `AP_PROTECT` enabled.
+Use the pyocd provided along with the nrf connect or install the latest version of pyocd if you prefere to use it externally. 
+
+```bash
+$ pyocd erase --mass --target nrf54l
+
+# --- OUTPUT ---
+0000395 W NRF54L15 is not in a secure state [target_nRF54L]
+0000608 I Mass erasing device... [eraser]
+0001324 I Mass erase complete [eraser]
+
+```
+If pyocd command fails to erase/flash with cmsis debugger, make sure it.
+
+
+[Working with the nRF52 Series' improved APPROTECT](https://devzone.nordicsemi.com/nordic/nordic-blog/b/blog/posts/working-with-the-nrf52-series-improved-approtect). 
+
+Currently, I don't have J-link at hand. This meant I had to do quite a bit of detective work to come up with a solution. I found the solution in the seedstudio forum discussion on Xiao-nrf54l15. The discussion provides quite a bit of insight on the issues that you might face.
+[Xiao-nrf54l15 Memory transfer fault](https://forum.seeedstudio.com/t/xiao-nrf54l15-an-error-occurred-memory-transfer-fault-0x00ffc31c-0x00ffc31f/293792/26?page=2)
+[Control access port protection documentation]
+
 
 
 ## Design Notes
