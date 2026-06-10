@@ -1,4 +1,3 @@
-## !! Work in progress: The current design is untested. This page will be updated after assembly and testing
 ![Project Banner](Pictures/Banner.png)
 
 ## Overview
@@ -34,7 +33,6 @@ Reference/        # Additional reference layouts and guides
 	```
 2. Open the Altium project file in `Altium/Nordic_BLE/Nordic_BLE.PrjPcb`.
 3. Optionally you can import the Altium project in latest Kicad releases.
-4. Review the schematic and PCB files.
 
 ## Stackup
 

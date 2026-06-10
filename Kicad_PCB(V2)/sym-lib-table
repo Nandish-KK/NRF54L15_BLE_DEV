@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 0)
+  (lib (name "Nordic_BLE-altium-import")(type "KiCad")(uri "${KIPRJMOD}/Nordic_BLE-altium-import.kicad_sym")(options "")(descr ""))
+)
