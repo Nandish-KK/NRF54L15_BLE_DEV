@@ -1,0 +1,10 @@
+#include "Sleepy_Dev_Board_nrf54l15_cpuflpr.dts"
+
+/ {
+	compatible = "Thesynthscope,Sleepy-Dev-Board-cpuflpr-xip";
+};
+
+&cpuflpr_sram {
+	reg = <0x2002f000 DT_SIZE_K(68)>;
+	ranges = <0x0 0x2002f000 DT_SIZE_K(68)>;
+};

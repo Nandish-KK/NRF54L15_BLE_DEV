@@ -1,0 +1,8 @@
+board:
+  name: Sleepy_Dev_Board
+  vendor: Thesynthscope
+  socs:
+  - name: nrf54l15
+    variants:
+    - name: xip
+      cpucluster: cpuflpr

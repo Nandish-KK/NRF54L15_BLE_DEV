@@ -1,0 +1,10 @@
+identifier: Sleepy_Dev_Board/nrf54l15/cpuflpr
+name: NRF54l15 based devboard with onboard cmsis-dap debugger and support for coin-cell
+vendor: Thesynthscope
+arch: riscv
+toolchain:
+  - zephyr
+sysbuild: true
+ram: 96
+flash: 96
+supported: []

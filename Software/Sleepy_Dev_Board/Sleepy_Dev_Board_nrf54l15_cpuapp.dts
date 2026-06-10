@@ -1,0 +1,174 @@
+/dts-v1/;
+#include <nordic/nrf54l15_cpuapp.dtsi>
+#include "Sleepy_Dev_Board-pinctrl.dtsi"
+#include "zephyr/dt-bindings/led/led.h"
+#include <zephyr/dt-bindings/gpio/gpio.h>
+#include <nordic/nrf54l15_partition.dtsi>
+
+
+/ {
+	model = "NRF54l15 based devboard with onboard cmsis-dap debugger and support for coin-cell";
+	compatible = "Thesynthscope,Sleepy-Dev-Board-cpuapp";
+
+	chosen {
+		zephyr,code-partition = &slot0_partition;
+		zephyr,sram = &cpuapp_sram;
+		zephyr,flash = &cpuapp_rram;
+		zephyr,flash-controller = &rram_controller;
+		zephyr,console = &uart30;
+		logging,console = &uart30;
+		zephyr,shell-uart = &uart30;
+		zephyr,uart-mcumgr = &uart30;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		status = "okay";
+		greenled: green_led {
+			gpios = <&gpio2 0 0>;
+
+		};
+	};
+
+	aliases {
+		led0 = &greenled;
+		led-strip = &{/soc/peripheral@50000000/spi@4a000/ws2812-spi@0/};
+	};
+
+};
+
+&grtc {
+	owned-channels = <0 1 2 3 4 5 6 7 8 9 10 11>;
+	/* Channels 7-11 reserved for Zero Latency IRQs, 3-4 for FLPR */
+	child-owned-channels = <3 4 7 8 9 10 11>;
+	status = "okay";
+};
+
+&cpuapp_sram {
+	status = "okay";
+};
+
+&lfxo {
+	load-capacitors = "internal";
+	load-capacitance-femtofarad = <17000>;
+};
+
+&hfxo {
+	load-capacitors = "internal";
+	load-capacitance-femtofarad = <15000>;
+};
+
+&radio {
+	status = "disabled";
+	dfe-antenna-num = <2>;
+	dfegpio0-gpios = <&gpio1 10 0>;
+};
+
+&ieee802154 {
+	status = "okay";
+};
+
+&temp {
+	status = "okay";
+};
+
+&clock {
+	status = "okay";
+};
+
+&gpio0 {
+	status = "okay";
+};
+
+
+&pinctrl {
+
+	spi00_default: spi00_default {
+
+		group2 {
+			psels = <NRF_PSEL(SPIM_MOSI, 2, 2)>,
+					<NRF_PSEL(SPIM_SCK, 1, 0)>;
+
+		};
+	};
+
+	spi00_sleep: spi00_sleep {
+		group1 {
+			psels = <NRF_PSEL(SPIM_MOSI, 2, 2)>,
+					<NRF_PSEL(SPIM_SCK, 1, 0)>;
+		};
+	};
+
+	uart30_default: uart30_default {
+
+		group1 {
+			psels = <NRF_PSEL(UART_TX, 0, 0)>, <NRF_PSEL(UART_RX, 0, 1)>;
+			nordic,drive-mode = <NRF_DRIVE_H0H1>;
+		};
+	};
+
+	uart30_sleep: uart30_sleep {
+		group1 {
+			psels = <NRF_PSEL(UART_TX, 0, 0)>;
+		};
+	};
+};
+
+&gpio2 {
+	status = "okay";
+};
+
+&gpiote20 {
+	status = "okay";
+};
+
+&gpiote30 {
+	status = "okay";
+};
+
+&wdt30 {
+	status = "okay";
+};
+
+&spi00 {
+	status = "okay";
+	pinctrl-0 = <&spi00_default>;
+	pinctrl-1 = <&spi00_sleep>;
+	pinctrl-names = "default", "sleep";
+	ws2812-spi@0 {
+		compatible = "worldsemi,ws2812-spi";
+		reg = <0x0>;
+		spi-max-frequency = <DT_FREQ_M(8)>;
+		chain-length = <1>;
+		color-mapping = <
+		LED_COLOR_ID_GREEN
+		LED_COLOR_ID_RED
+		LED_COLOR_ID_BLUE
+		>;
+		spi-one-frame = <0xFC>;  
+		spi-zero-frame = <0xE0>;
+	};
+
+	compatible = "nordic,nrf-spim";
+	
+};
+
+&gpio1 {
+	status = "okay";
+};
+
+&uart30 {
+	status = "okay";
+	current-speed = <250000>;
+	pinctrl-0 = <&uart30_default>;
+	pinctrl-1 = <&uart30_sleep>;
+	pinctrl-names = "default", "sleep";
+};
+
+&pclk {
+	clock-frequency = <DT_FREQ_M(16)>;
+};
+
+&hfpll {
+	clock-frequency = <DT_FREQ_M(128)>;
+};

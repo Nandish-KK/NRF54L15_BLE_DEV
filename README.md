@@ -116,6 +116,13 @@ $ pyocd erase --mass --target nrf54l
 If pyocd command fails to erase/flash with cmsis debugger, try power cycling.
 
 
+[Working with the nRF52 Series' improved APPROTECT](https://devzone.nordicsemi.com/nordic/nordic-blog/b/blog/posts/working-with-the-nrf52-series-improved-approtect). 
+
+Currently, I don't have J-link at hand. This meant I had to do quite a bit of detective work to come up with a solution. I found the solution in the seedstudio forum discussion on Xiao-nrf54l15. The discussion provides quite a bit of insight on the issues that you might face.
+[Xiao-nrf54l15 Memory transfer fault](https://forum.seeedstudio.com/t/xiao-nrf54l15-an-error-occurred-memory-transfer-fault-0x00ffc31c-0x00ffc31f/293792/26?page=2)
+[Control access port protection documentation]
+
+
 
 ## Design Notes
 
